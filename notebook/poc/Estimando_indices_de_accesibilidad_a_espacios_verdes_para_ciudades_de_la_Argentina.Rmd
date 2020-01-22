@@ -18,6 +18,7 @@ httr::set_config(httr::config(http_version = 0))
 ```{r}
 library(tidyverse)
 library(sf)
+library(osmdata)
 ```
 
 
@@ -61,7 +62,6 @@ Detalles de OSM para la identificación de espacios verdes
 https://wiki.openstreetmap.org/wiki/Key:leisure
 
 ```{r}
-library(osmdata)
 
 bbox = getbb('Ciudad Autonoma de Buenos Aires')
 bbox
@@ -217,7 +217,7 @@ ggplot() +
 ```{r eval=FALSE}
 bbox <- getbb('Argentina', featuretype = "country")
 
-arg_borders <- st_read("../../Datasets/IGN/Provincias/Provincias.shp") %>% 
+arg_borders <- st_read("~/Dropbox/Datasets/IGN/Provincias/Provincias.shp") %>% 
   summarise()
 
 plot(arg_borders)
@@ -240,7 +240,7 @@ Imposible de realizar! El query de parques falla con este mensaje:
 
 Camino alternativo:
 
-Descargaremos en export de todos los datos que tiene OSM para la Argentina, via GEOFABRIK: https://download.geofabrik.de/south-america/argentina.html
+Descargaremos el export de todos los datos que tiene OSM para la Argentina, via GEOFABRIK: https://download.geofabrik.de/south-america/argentina.html
 
 ```{r eval=FALSE}
 # la capa "natural" no tiene nada util para nuestro caso; sus categorias son
@@ -327,7 +327,7 @@ areas_verdes <- areas_verdes %>%
 
 
 ```{r eval=FALSE}    
-# Guardamos el resultdo
+# Guardamos el resulatdo
 
 #st_write(areas_verdes, "../../Datasets/ambiente/areas_verdes_argentina.geojson", delete_dsn = TRUE)
 ```
