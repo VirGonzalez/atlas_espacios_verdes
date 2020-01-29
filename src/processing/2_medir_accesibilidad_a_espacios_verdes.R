@@ -1,4 +1,4 @@
-## Estimando distancia desde cada radio censal Urbano hasta el espacio verde más cercano
+## Verificando accesibilidad desde cada radio censal Urbano hasta el espacio verde más cercano
 library(tidyverse)
 library(sf)
 library(osrm)
