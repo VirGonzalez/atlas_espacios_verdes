@@ -1,4 +1,7 @@
-## Estimando isocronas a pie desde cada radio censal Urbano 
+###########################################################
+# Estimar isocronas a pie desde cada radio censal Urbano  #
+###########################################################
+
 library(tidyverse)
 library(sf)
 library(osrm)
@@ -107,6 +110,5 @@ procesar_isocronas_depto <- function(codigo, dest = "data/processed/isocronas") 
 isocronas <- get_isocronas(radios_ciudades) %>% 
     select(id)
 
-
-
-    st_write("data/processed/isocronas/isocronas_10_min_a_pie_radios_urbanos.shp")
+# Guardamos los resultados
+st_write("data/processed/isocronas/isocronas_10_min_a_pie_radios_urbanos.shp")

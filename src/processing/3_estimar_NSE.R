@@ -1,6 +1,6 @@
-#########################################################################
-# Creando un Indice de Nivel Socioeconómico para cada aglomerado urbano #
-#########################################################################
+########################################################################
+# Crear un Indice de Nivel Socioeconómico para cada aglomerado urbano  #
+########################################################################
 
 library(psych)
 library(tidyverse)
