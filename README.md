@@ -9,7 +9,3 @@ Es simplre reproducir el entorno (es decir, instaar automáticamente todos los p
 2. Abrir el proyecto de R desde RStudio (atlas_espacios_verdes.Rproj). De no trabajar con RStudio, simplemente correr los siguientes comandos en una sesión de R lanzada desde la carpeta raíz del proyecto. 3. Usar `renv::init()` para inicializar `renv` 
 4. usar `renv::restore()` para instalar automáticamente los paquetes de los que depende el proyecto. La información que utilizar `renv` para reconstruir el ambiente se encuentra en el archivo `renv.lock`
 
-
-renv::restore() To reproduce the environment (re-installing the same packages) we only need to keep the renv.lock file. The function  will restore the state from this lockfile.
-
-Cache
