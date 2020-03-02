@@ -28,4 +28,4 @@ mortalidad_AMBA <- denominacion_partidos_AMBA_EPH %>%
     left_join(mortalidad) %>% 
     select(-`Jurisdicciones Departamentos`) 
 
-write_csv(mortalidad_AMBA, "data/processed/DEIS")
+write_csv(mortalidad_AMBA, "data/processed/DEIS/mortalidad_AMBA_2018.csv")
