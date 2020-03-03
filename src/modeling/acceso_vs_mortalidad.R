@@ -3,13 +3,18 @@ library(tidyverse)
 accesibilidad <- read_csv("data/processed/metricas/accesibilidad_espacios_verdes_localidades.csv") 
 
 mortalidad <- read_csv("data/processed/DEIS/mortalidad_AMBA_2018.csv") %>% 
-    mutate(tasa_m_infantil = (`Menores de 1`/`Nacidos Vivos`) * 1000 )
+    mutate(tasa_m_infantil = (`Menores de 1`/`Nacidos Vivos`) * 1000,
+           # Esto esta mal, necesitariamos la cantidad de partos. Pero para explorar lo hacemos
+           tasa_m_maternal = (`Muertes Maternas`/`Nacidos Vivos`) * 1000)
 
 ax_decil_1_vs_mortandad <- accesibilidad %>% 
     filter(decil_NSE == 1) %>% 
     right_join(mortalidad) 
 
 lm(tasa_m_infantil ~ tasa_acceso + total_ha_accesibles + m2_accesibles_per_capita, data = ax_decil_1_vs_mortandad) %>% 
+    summary()
+
+lm(tasa_m_maternal ~ tasa_acceso + total_ha_accesibles + m2_accesibles_per_capita, data = ax_decil_1_vs_mortandad) %>% 
     summary()
 
 
@@ -32,7 +37,7 @@ lm(tasa_m_infantil ~ total_ha_accesibles, data = ax_sumario_vs_mortandad) %>% br
 ####
 
 
-get_effect <- function(dframe) {
+get_effect_m_infantil <- function(dframe) {
     
     decil = last(dframe$decil_NSE)
     
@@ -63,7 +68,7 @@ accesibilidad %>%
     right_join(mortalidad) %>% 
     group_by(decil_NSE) %>% 
     group_split() %>% 
-    map_df(get_effect)
+    map_df(get_effect_m_infantil)
 
 # Scatterplots
 
@@ -75,3 +80,27 @@ accesibilidad %>%
     map(plot_model)
     
 
+### Mortalidad maternal
+# Tambien encontramos que una mayor tasa de acceso a esapacios verdes esta correlacionada con una menor
+# tasa de mortandad materna / nacimientos... para los estratos más altos de la población! Deciles NSE 6, 7, 8, 9, 10
+
+
+get_effect_m_maternal <- function(dframe) {
+    
+    decil = last(dframe$decil_NSE)
+    
+    dframe %>% 
+        {lm(tasa_m_maternal ~ tasa_acceso + total_ha_accesibles + m2_accesibles_per_capita, data = .)} %>% 
+        broom::tidy() %>% 
+        mutate(p.value = round(p.value, 2)) %>% 
+        {cbind(decil, .)} %>% 
+        filter(term != "(Intercept)")
+}
+
+
+accesibilidad %>% 
+    filter(!is.na(decil_NSE)) %>% 
+    right_join(mortalidad) %>% 
+    group_by(decil_NSE) %>% 
+    group_split() %>% 
+    map_df(get_effect_m_maternal)
