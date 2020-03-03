@@ -141,8 +141,6 @@ extraer_indice_NSE <- function(nivel_universitario_o_superior,
 # DA UNA CORRELACION DE 0.9875418 
 # VENGA NOMAS EL METODO NO REFINADO PERO PARSIMONIOSO... Y CUASI EQUIVALENTE
 
-
-
 radios_deciles_NSE <- radios_ciudades %>% 
     group_by(eph_aglome) %>% 
     mutate(decil_NSE = extraer_indice_NSE(nivel_universitario_o_superior, 
