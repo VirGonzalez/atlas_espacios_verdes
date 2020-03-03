@@ -2,38 +2,11 @@ library(tidyverse)
 
 accesibilidad <- read_csv("data/processed/metricas/accesibilidad_espacios_verdes_localidades.csv") 
 
-mortalidad <- read_csv("data/processed/DEIS/mortalidad_AMBA_2018.csv") %>% 
+mortalidad_AMBA <- read_csv("data/processed/DEIS/mortalidad_AMBA_2018.csv") %>% 
     mutate(tasa_m_infantil = (`Menores de 1`/`Nacidos Vivos`) * 1000,
            # Esto esta mal, necesitariamos la cantidad de partos. Pero para explorar lo hacemos
            tasa_m_maternal = (`Muertes Maternas`/`Nacidos Vivos`) * 1000)
 
-ax_decil_1_vs_mortandad <- accesibilidad %>% 
-    filter(decil_NSE == 1) %>% 
-    right_join(mortalidad) 
-
-lm(tasa_m_infantil ~ tasa_acceso + total_ha_accesibles + m2_accesibles_per_capita, data = ax_decil_1_vs_mortandad) %>% 
-    summary()
-
-lm(tasa_m_maternal ~ tasa_acceso + total_ha_accesibles + m2_accesibles_per_capita, data = ax_decil_1_vs_mortandad) %>% 
-    summary()
-
-
-
-ax_sumario_vs_mortandad <- accesibilidad %>% 
-    group_by(eph_aglome, localidade) %>%
-    summarise(total_ha_accesibles = mean(total_ha_accesibles),
-              m2_accesibles_per_capita = mean(m2_accesibles_per_capita)) %>% 
-    right_join(mortalidad) %>% 
-    mutate(tasa_m_infantil = (`Menores de 1`/`Nacidos Vivos`) * 1000 )
-
-lm(tasa_m_infantil ~ total_ha_accesibles, data = ax_sumario_vs_mortandad) %>% broom::tidy()
-
-
-
-
-####
-####
-####
 ####
 
 
@@ -65,7 +38,7 @@ plot_model <- function(dframe) {
 
 accesibilidad %>% 
     filter(!is.na(decil_NSE)) %>% 
-    right_join(mortalidad) %>% 
+    right_join(mortalidad_AMBA) %>% 
     group_by(decil_NSE) %>% 
     group_split() %>% 
     map_df(get_effect_m_infantil)
@@ -74,7 +47,7 @@ accesibilidad %>%
 
 accesibilidad %>% 
     filter(!is.na(decil_NSE)) %>% 
-    right_join(mortalidad) %>% 
+    right_join(mortalidad_AMBA) %>% 
     group_by(decil_NSE) %>% 
     group_split() %>% 
     map(plot_model)
@@ -82,7 +55,8 @@ accesibilidad %>%
 
 ### Mortalidad maternal
 # Tambien encontramos que una mayor tasa de acceso a esapacios verdes esta correlacionada con una menor
-# tasa de mortandad materna / nacimientos... para los estratos más altos de la población! Deciles NSE 6, 7, 8, 9, 10
+# tasa de mortandad materna / nacimientos... para los estratos más altos de la población! 
+# Deciles NSE 6, 7, 8, 9, 10
 
 
 get_effect_m_maternal <- function(dframe) {
@@ -100,7 +74,17 @@ get_effect_m_maternal <- function(dframe) {
 
 accesibilidad %>% 
     filter(!is.na(decil_NSE)) %>% 
-    right_join(mortalidad) %>% 
+    right_join(mortalidad_AMBA) %>% 
     group_by(decil_NSE) %>% 
     group_split() %>% 
     map_df(get_effect_m_maternal)
+
+###
+###
+
+accesibilidad_aglos <- read_csv("data/processed/metricas/accesibilidad_espacios_verdes_aglomerados.csv")
+
+ggplot(accesibilidad_aglos) +
+    geom_col(aes(x = decil_NSE, y = m2_accesibles_per_capita, fill = decil_NSE)) +
+    facet_wrap(~eph_aglome, scales = "free_y") +
+    scale_fill_viridis_c()

@@ -8,7 +8,17 @@ library(tidyverse)
 
 radios_ciudades <- st_read("data/raw/INDEC/radios_eph.json", stringsAsFactors = FALSE) %>% 
     filter(tiporad == "U") %>% 
-    st_transform(4326)
+    st_transform(4326) %>% 
+    # Corregimos un error de tipeo en la data de origen ("Constit*i*ución")           
+    mutate(eph_aglome = ifelse(eph_aglome == "San Nicolas - Villa Constitiución",
+                               "San Nicolas - Villa Constitución",
+                               eph_aglome)) %>% 
+    # Retiramos el identificador censal que precede al nombre
+    mutate(localidade = str_replace(localidade, "\\(.*\\) ", "")) %>% 
+    # Le devolvemos a cada comuna de la CABA su identificación, que se pierde en el paso anterior
+    mutate(localidade = ifelse(localidade == "Ciudad Autónoma de Buenos Aires",
+                               paste("CABA Comuna", str_remove(coddepto, "0")),
+                               localidade))
 
 
 # Cargamos datos del Censo 2010
@@ -138,7 +148,6 @@ radios_deciles_NSE <- radios_ciudades %>%
     mutate(decil_NSE = extraer_indice_NSE(nivel_universitario_o_superior, 
                                           posesion_computadora,
                                           desocupacion)) %>% 
-    select(RADIO, PERSONAS, decil_NSE) %>% 
     # Solo nos quedamos con ID de radio, poblacion y NSE
     select(RADIO, PERSONAS, decil_NSE) %>% 
     # No necesitamos los poligonos
@@ -147,4 +156,3 @@ radios_deciles_NSE <- radios_ciudades %>%
 # Guardamos los resultados
 
 write_csv(radios_deciles_NSE, "data/processed/NSE/radios_urbanos_decil_NSE_por_aglomerado_EPH.csv")
-    
