@@ -16,9 +16,11 @@ radios_ciudades <- st_read("data/raw/INDEC/radios_eph.json", stringsAsFactors = 
                              "San Nicolas - Villa Constitución",
                              eph_aglome)) %>% 
     # Retiramos el identificador censal que precede al nombre
-    # lo cual ademas de hacer mas legible al nombre, combina a toda la CABA
-    # en una sola "localidad" (de lo contrario, cada COMUNA tiene su propio idetificador) 
-    mutate(localidade = str_replace(localidade, "\\(.*\\) ", "")) 
+    mutate(localidade = str_replace(localidade, "\\(.*\\) ", "")) %>% 
+    # Le devolvemos a cada comuna de la CABA su identificación, que se pierde en el paso anterior
+    mutate(localidade = ifelse(localidade == "Ciudad Autónoma de Buenos Aires",
+                               paste("CABA Comuna", str_remove(coddepto, "0")),
+                               localidade))
 
 espacios_verdes <- st_read("data/processed/osm/areas_verdes_urbanas_argentina.shp") %>% 
     mutate(area_m2 = as.numeric(st_area(.)))
