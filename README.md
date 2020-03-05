@@ -1,8 +1,9 @@
 # Atlas de Espacios Verdes e Índice de Accesibilidad para ciudades argentinas
-Código para el relevamiento de espacios verdes en ciudades argentinas, y la cuantificación de su accesibilidad
+
+Código, datos y reportes generados durante el relevamiento y cuantificación de accesibilidad de espacios verdes en ciudades argentinas. 
 
 
-## Reproducir el entorno de trabajo
+## Reproducción del entorno de trabajo
 
 Para reproducir el entorno (es decir, instalar automáticamente todos los paquetes de R que requeire el código del proyecto) se emplean las funciones del paquete `renv`, que puede ser instalado desde [CRAN](https://cran.r-project.org/web/packages/renv/index.html):
 
