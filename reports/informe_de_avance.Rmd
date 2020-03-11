@@ -89,3 +89,9 @@ Las métricas de accesibilidad están disponibles en los siguientes enlaces. La 
 
 - A nivel localidad: __[porcentaje de la población con acceso a espacios verdes, total de hectáreas accesibles, y m2 accesibles per cápita, por estrato de nivel socioeconómico](https://raw.githubusercontent.com/bitsandbricks/atlas_espacios_verdes/master/data/processed/metricas/accesibilidad_espacios_verdes_localidades.csv)__
 
+
+### Herramienta de viusalizacion
+
+La aplicación interactiva disponible en https://havb.shinyapps.io/acceso_espacios_verdes/ muestra en el mapa la posición y superficie de los espacios verdes identificados. También provee un indicador preliminar de accesibilidad para cada radio censal, tomando como umbral una distancia de 300 metros lineales hasta el espacio verde público más cercano. 
+
+Una próxima versión de la aplicación, en desarrollo, medirá la accesibilidad en función de la distancia a pie a través de la grilla vial, y mostrará valores para cada estrato de la población según nivel socioeconómico.

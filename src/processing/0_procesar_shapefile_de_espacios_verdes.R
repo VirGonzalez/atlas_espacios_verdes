@@ -4,6 +4,7 @@
 
 ## Carga de datos
 library(sf)
+library(tidyverse)
 
 areas_verdes <- st_read("data/raw/OSM/gis_osm_landuse_a_free_1.shp", 
                         stringsAsFactors = F) %>%
@@ -102,4 +103,4 @@ areas_verdes <- areas_verdes %>%
               fclass = paste(fclass, collapse = ","),
               combina = n())
 
-st_write(areas_verdes, "data/processed/OSM/areas_verdes_urbanas_argentina.shp", delete_dsn = TRUE)
+st_write(areas_verdes, "data/processed/osm/areas_verdes_urbanas_argentina.shp", delete_dsn = TRUE)

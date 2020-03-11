@@ -47,7 +47,7 @@ ui <- navbarPage("Acceso a espacios verdes en ciudades argentinas",
                                       selectInput(
                                         inputId = "aglomerado",
                                         label = "Aglomerado urbano:",
-                                        choices = aglomerados$Aglomerado,
+                                        choices = aglomerados$eph_aglome,
                                         selectize = FALSE
                                       )
                                 
@@ -88,7 +88,7 @@ server = function(input, output) {
   
   aglo_elegido <- eventReactive(input$aglomerado, {
     
-    filter(aglomerados, Aglomerado == input$aglomerado)
+    filter(aglomerados, eph_aglome == input$aglomerado)
   })
   
   
