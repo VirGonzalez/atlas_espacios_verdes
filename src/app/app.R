@@ -4,7 +4,6 @@ library(tidyverse)
 
 aglomerados <- read_csv('data/aglomerados.csv')
 
-
 # Mapbox stuff
 base_url <- "https://api.mapbox.com/"
 username <- "havb"
@@ -47,7 +46,7 @@ ui <- navbarPage("Acceso a espacios verdes en ciudades argentinas",
                                       selectInput(
                                         inputId = "aglomerado",
                                         label = "Aglomerado urbano:",
-                                        choices = aglomerados$eph_aglome,
+                                        choices = aglomerados$aglomerado,
                                         selectize = FALSE
                                       )
                                 
@@ -88,7 +87,7 @@ server = function(input, output) {
   
   aglo_elegido <- eventReactive(input$aglomerado, {
     
-    filter(aglomerados, eph_aglome == input$aglomerado)
+    filter(aglomerados, aglomerado == input$aglomerado)
   })
   
   

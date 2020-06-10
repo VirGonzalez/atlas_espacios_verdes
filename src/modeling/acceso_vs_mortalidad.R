@@ -44,7 +44,7 @@ plot_model <- function(dframe) {
 }
 
 
-# Encontramos que una mayor tasa de acceso a esapacios verdes esta correlacionada con una menor
+# Encontramos que una mayor tasa de acceso a espacios verdes esta correlacionada con una menor
 # mortandad infantil... para todos los estratos de la población, excepto el más bajo!
 
 accesibilidad %>% 

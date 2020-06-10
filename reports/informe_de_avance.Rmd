@@ -34,9 +34,9 @@ En la Argentina, la planificación y evaluación de los efectos de espacios verd
 
 El  proyecto contempla contribuir al abordaje de la problemática desarrollando tres recursos de acceso público:
 
-- Un Atlas de Espacios Verdes en Ciudades Argentinas, consistente en una base de datos georeferenciada con la posición, extensión, nombre y otros atributos de cada uno de los espacios verdes de acceso público presentes en las 155 localidades que en su conjunto forman los 32 grandes aglomerados urbanos en la República Argentina. _Status: completo._
+- Un Atlas de Espacios Verdes en Ciudades Argentinas, consistente en una base de datos georeferenciada con la posición, extensión, nombre y otros atributos de cada uno de los espacios verdes de acceso público presentes en las 155 localidades que en su conjunto forman los 32 grandes aglomerados urbanos en la República Argentina.
 
-- Un índice de accesibilidad a espacios verdes, georeferenciado en un mapa de alta resolución espacial (a nivel radio censal) cubriendo las 155 localidades que se aglomeran en los principales centros urbanizados del país. Elaborado siguiendo el marco metodológico “10 minute walk”[^1] [^2] [^3], que propone garantizar al 100% de la población urbana acceso a un espacio verde público a 10 minutos de caminata o menos[^4]. _Status: completo._
+- Un índice de accesibilidad a espacios verdes, georeferenciado en un mapa de alta resolución espacial (a nivel radio censal) cubriendo las 155 localidades que se aglomeran en los principales centros urbanizados del país. Elaborado siguiendo el marco metodológico “10 minute walk”[^1] [^2] [^3], que propone garantizar al 100% de la población urbana acceso a un espacio verde público a 10 minutos de caminata o menos[^4].
 
 [^1]: https://www.nrpa.org/our-work/partnerships/initiatives/10-minute-walk/10-minute-walk-commitment-framework/
 [^2]: https://10minutewalk.org/
@@ -44,23 +44,23 @@ El  proyecto contempla contribuir al abordaje de la problemática desarrollando 
 [^4]: Para un estudio sobre los efectos de la cercania a espacios verdes en el nivel de actividad física de las personas, y del punto de inflexión que representan los 10 minutos de distancia a pie, véase "Quantifying the Contribution of Neighborhood Parks to Physical Activity" https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3800218/
 
 
-- Un estudio sobre los posibles efectos del acceso a espacios verdes estimando la relación entre accesibilidad, nivel socioeconómico, y dimensiones de la salud como vulnerabilidad sanitaria y mortalidad neonatal. _Status: En ejecución._
+- Un estudio sobre los posibles efectos del acceso a espacios verdes estimando la relación entre accesibilidad, nivel socioeconómico, y dimensiones de la salud como vulnerabilidad sanitaria y mortalidad neonatal.
 
 ### Actividades a realizar para el cumplimiento de objetivos
 
-- Prospección, recolección, limpieza y cruce de fuentes de información georeferenciada con posición y atributos de espacios verdes urbanos. _Status: completo._
+- Prospección, recolección, limpieza y cruce de fuentes de información georeferenciada con posición y atributos de espacios verdes urbanos. 
 
-- Generación de una base de datos georeferenciada registrando los espacios verdes presentes en las 155 principales localidades urbanizadas de la Argentina. _Status: completo._
+- Generación de una base de datos georeferenciada registrando los espacios verdes presentes en las 155 principales localidades urbanizadas de la Argentina. 
 
-- Validación de los resultados mediante control de calidad por contraste con imagen satelital (inspección visual) y consulta con expertos en la materia. _Status: completo._
+- Validación de los resultados mediante control de calidad por contraste con imagen satelital (inspección visual) y consulta con expertos en la materia. 
 
-- Aplicación de técnicas de análisis geoespacial, y cruce con datos censales y de la Encuesta Permanente de Hogares (INDEC) para establecer cantidad de población servida por espacios verdes, distancias de acceso y otros indicadores asociados, con gran resolución espacial (a nivel radio censal). _Status: completo._
+- Aplicación de técnicas de análisis geoespacial, y cruce con datos censales y de la Encuesta Permanente de Hogares (INDEC) para establecer cantidad de población servida por espacios verdes, distancias de acceso y otros indicadores asociados, con gran resolución espacial (a nivel radio censal). 
 
-- Elaboración de índices de accesibilidad a espacios verdes públicos de acuerdo a la metodología desarrollada por la Unión Europea para sus indicadores de sustentabilidad (European Common Indicators), para cada uno de los centros urbanizados. _Status: completo._
+- Elaboración de índices de accesibilidad a espacios verdes públicos de acuerdo a la metodología desarrollada por la Unión Europea para sus indicadores de sustentabilidad (European Common Indicators), para cada uno de los centros urbanizados. 
 
-- Establecimiento de un ranking que exprese la situación relativa de las ciudades Argentinas respecto al acceso que brindan a espacios verdes públicos. _Status: Pendiente de ejecución._
+- Establecimiento de un ranking que exprese la situación relativa de las ciudades Argentinas respecto al acceso que brindan a espacios verdes públicos. 
 
-- Desarrollo de un paper que reporte métodos empleados y hallazgos resultantes tras el estudio de la distribución del indicador de accesibilidad en la Argentina, y de su correlación con diversos indicadores de salud pública. _Status: En ejecución._
+- Desarrollo de un paper que reporte métodos empleados y hallazgos resultantes tras el estudio de la distribución del indicador de accesibilidad en la Argentina, y de su correlación con diversos indicadores de salud pública. 
 
 ## Entregables
 
