@@ -93,7 +93,6 @@ paste_skip_NAs <- function(lista, sep =", ") {
     paste(lista[!is.na(lista)], collapse = sep)
 }
 
-
 areas_verdes <- areas_verdes %>% 
     st_join(areas_unificadas) %>% 
     #lwgeom::st_make_valid() %>% #  si el summarise() falla con un error de topología inválida
@@ -101,6 +100,20 @@ areas_verdes <- areas_verdes %>%
     summarise(osm_id = paste(osm_id, collapse = ","),
               name = paste_skip_NAs(name),
               fclass = paste(fclass, collapse = ","),
-              combina = n())
+              combina = n()) %>% 
+    distinct(osm_id, .keep_all = TRUE) # este paso elimina poligonos que aparecen duplicados despues del join
+
+# este paso elimina algunos espacios verdes individuales que aparecen sueltos pero 
+# tambien estan incluidos en algun esapacio combinado por el buffer
+espacios_combinados <- areas_verdes %>% 
+    filter(combina > 1) %>% 
+    pull(osm_id) %>% 
+    str_split(",") %>% 
+    unlist()
+
+areas_verdes <- areas_verdes %>% 
+    filter(!(combina == 1 & (osm_id %in% espacios_combinados)))
+
+# a guardar
 
 st_write(areas_verdes, "data/processed/osm/areas_verdes_urbanas_argentina.shp", delete_dsn = TRUE)
