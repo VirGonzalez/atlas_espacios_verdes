@@ -11,14 +11,16 @@ areas_verdes <- st_read("data/raw/OSM/gis_osm_landuse_a_free_1.shp",
     filter(fclass %in% c("nature_reserve", "park")) %>% 
     select(-code)
 
-## Retenemos sólo espacios mayores a media hectárea
+## Retenemos sólo espacios mayores a un umbral de corte
+# descartamos los espacios con áreas menores a 1000 m2 (más pequeños que una plazoleta, aproximadamente)
+umbral_descarte_m2 <- 1000
 
 # Ante todo, proyección equiareal
 areas_verdes <- areas_verdes %>% 
     st_transform(crs = "+proj=laea +lat_0=-40 +lon_0=-60 +x_0=0 +y_0=0 +ellps=WGS84 +units=m +no_defs")
 
 areas_verdes <- areas_verdes %>% # Pasamos a proyección equiareal para una medición precisa de áreas
-    filter(as.numeric(st_area(.)) > 5000) 
+    filter(as.numeric(st_area(.)) > umbral_descarte_m2) # Descartamos áreas menores al umbral
 
 
 ## Retirar Grandes Parques Nacionales del dataset
@@ -78,7 +80,7 @@ areas_verdes <- areas_verdes %>%
 # asi podemos considerar su tamaño total luego
 
 
-# Generamos un _buffer_ de 10 metros, y unimos
+# Generamos un _buffer_ de 5 metros, y unimos
 areas_unificadas <- st_buffer(areas_verdes, 5) %>% 
     st_union() %>% 
     st_cast("POLYGON") %>% 
@@ -104,7 +106,7 @@ areas_verdes <- areas_verdes %>%
     distinct(osm_id, .keep_all = TRUE) # este paso elimina poligonos que aparecen duplicados despues del join
 
 # este paso elimina algunos espacios verdes individuales que aparecen sueltos pero 
-# tambien estan incluidos en algun esapacio combinado por el buffer
+# también estan incluidos en algún espacio combinado por el buffer
 espacios_combinados <- areas_verdes %>% 
     filter(combina > 1) %>% 
     pull(osm_id) %>% 

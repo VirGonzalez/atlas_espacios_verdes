@@ -22,8 +22,22 @@ radios_ciudades <- st_read("data/raw/INDEC/radios_eph.json", stringsAsFactors = 
                                paste("CABA Comuna", str_remove(coddepto, "0")),
                                localidade))
 
+# Umbral de corte para áreas de espacios verdes
+# Consideramos un mínimo de media hectárea, o 5000 m2, 
+# siguiendo los lineamientos de los Indicadores Europeos de Sustentabilidad
+# (https://www.gdrc.org/uem/footprints/eci_final_report.pdf). 
+# que miden el porcentaje de habitantes que reside a menos de 300 metros lineales de un espacio abierto y público 
+# de al menos media hectárea.
+
+umbral_area_m2 <- 5000
+
 espacios_verdes <- st_read("data/processed/osm/areas_verdes_urbanas_argentina.shp") %>% 
-    mutate(area_m2 = as.numeric(st_area(.)))
+    filter(as.numeric(st_area(.))  >= umbral_area_m2) %>% 
+        mutate(area_m2 = as.numeric(st_area(.))) 
+
+
+
+
 
 accesibilidad  <- read_csv("data/processed/accesibilidad/espacios_verdes_mas_de_media_ha_a_10_m_caminando.csv") %>% 
     mutate(situacion = ifelse(total_ha > 0, "con_acceso", "sin_acceso"))
