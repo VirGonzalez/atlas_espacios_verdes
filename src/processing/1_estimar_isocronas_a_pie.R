@@ -2,9 +2,16 @@
 # Estimar isocronas a pie desde cada radio censal Urbano  #
 ###########################################################
 
+# ATENCION #
+# El ruteo requiere de una instancia local de OSRM
+# véase:
+# https://rpubs.com/HAVB/osrm
+
 library(tidyverse)
 library(sf)
 library(osrm)
+
+options(osrm.server = "http://127.0.0.1:5000/")
 
 
 ## Cargamos radios censales urbanos usados para la EPH
@@ -13,13 +20,6 @@ library(osrm)
 radios_ciudades <- st_read("data/raw/INDEC/radios_eph.json", stringsAsFactors = FALSE) %>% 
     filter(tiporad == "U") %>% 
     st_transform(4326)
-
-# ATENCION #
-# El ruteo requiere de una instancia local de OSRM
-# véase:
-# https://rpubs.com/HAVB/osrm
-
-options(osrm.server = "http://127.0.0.1:5000/")
 
 
 # Buscamos establecer el área que puede cubrirse a pie desde el centroide de cada radio censal con una
