@@ -80,8 +80,11 @@ areas_verdes <- areas_verdes %>%
 # asi podemos considerar su tamaño total luego
 
 
-# Generamos un _buffer_ de 5 metros, y unimos
-areas_unificadas <- st_buffer(areas_verdes, 5) %>% 
+# Generamos un _buffer_ en torno a los polígonos, y los unimos 
+
+umbral_de_proximidad <- 15
+
+areas_unificadas <- st_buffer(areas_verdes, umbral_de_proximidad) %>% 
     st_union() %>% 
     st_cast("POLYGON") %>% 
     st_sf() %>% 
