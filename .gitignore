@@ -40,3 +40,6 @@ vignettes/*.pdf
 
 # Enormes archivos de OpenStreetMap
 data/raw/OSM/*
+
+# cosillas de Rosario
+Rosario/
