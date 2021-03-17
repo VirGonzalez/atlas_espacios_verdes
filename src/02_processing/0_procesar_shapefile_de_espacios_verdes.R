@@ -82,7 +82,7 @@ areas_verdes <- areas_verdes %>%
 
 # Generamos un _buffer_ en torno a los polígonos, y los unimos 
 
-umbral_de_proximidad <- 15
+umbral_de_proximidad <- 5
 
 areas_unificadas <- st_buffer(areas_verdes, umbral_de_proximidad) %>% 
     st_union() %>% 
