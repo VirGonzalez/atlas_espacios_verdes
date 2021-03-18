@@ -24,7 +24,8 @@ src/01_preparation/
 * 2_obtener_datos_mortalidad_DEIS.R
 * 3_obtener_ubicacion_barrios_populares.R
 
-src/02_processing/0_procesar_shapefile_de_espacios_verdes.R
+src/02_processing/
+* 0_procesar_shapefile_de_espacios_verdes.R
 * 1_estimar_isocronas_a_pie.R
 * 2_medir_accesibilidad_a_espacios_verdes.R
 * 3_estimar_NSE.R
