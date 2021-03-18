@@ -16,7 +16,7 @@ Para recrear el entorno de desarrollo (es decir, instalar automáticamente todos
 
 ### Procesamiento
 
-Correr los scripts provistos, con ésta secuencica:  
+Correr los scripts provistos, con ésta secuencia:  
 
 src/01_preparation/
 * 0_obtener_extracto_OSM_Argentina.R
