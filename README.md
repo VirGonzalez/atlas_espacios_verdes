@@ -18,15 +18,16 @@ Para recrear el entorno de desarrollo (es decir, instalar automáticamente todos
 
 Correr los scripts provistos, con ésta secuencica:  
 
-preparation/0_obtener_extracto_OSM_Argentina.R
-	    1_obtener_cartografia_oficial.R
-	    2_obtener_datos_mortalidad_DEIS.R
-	    3_obtener_ubicacion_barrios_populares.R
+src/01_preparation/
+* 0_obtener_extracto_OSM_Argentina.R
+* 1_obtener_cartografia_oficial.R
+* 2_obtener_datos_mortalidad_DEIS.R
+* 3_obtener_ubicacion_barrios_populares.R
 
-processing/0_procesar_shapefile_de_espacios_verdes.R
-	   1_estimar_isocronas_a_pie.R
-	   2_medir_accesibilidad_a_espacios_verdes.R
-	   3_estimar_NSE.R
-	   4_extraer_metricas_de_accesibilidad_a_espacios_verdes.R
-	   5_generar_output_app_visualizacion.R
+src/02_processing/0_procesar_shapefile_de_espacios_verdes.R
+* 1_estimar_isocronas_a_pie.R
+* 2_medir_accesibilidad_a_espacios_verdes.R
+* 3_estimar_NSE.R
+* 4_extraer_metricas_de_accesibilidad_a_espacios_verdes.R
+* 5_generar_output_app_visualizacion.R
 
