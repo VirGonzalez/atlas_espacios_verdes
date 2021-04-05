@@ -25,7 +25,7 @@ aglomerados <- radios %>%
     mutate(lon = st_coordinates(st_centroid(.))[,1],
            lat = st_coordinates(st_centroid(.))[,2])
 
-# Agregamos estadsticas agregadas de accesibilidad
+# Incluimos estadísticas agregadas de accesibilidad
 
 aglomerados <- aglomerados %>% 
     left_join(metricas %>%
@@ -48,7 +48,7 @@ radios_para_basemap <- radios %>%
 
 # A guardar
 
-st_write(aglomerados, "src/app/data/aglomerados.geojson", delete_dsn = TRUE)
-write_csv(metricas, "src/app/data/metricas.csv")
+st_write(aglomerados, "src/04_app/data/aglomerados.geojson", delete_dsn = TRUE)
+write_csv(metricas, "src/04_app/data/metricas.csv")
 st_write(radios_para_basemap, "data/processed/mapbox/radios_con_accesibilidad_para_basemap.geojson",
          delete_dsn = TRUE)

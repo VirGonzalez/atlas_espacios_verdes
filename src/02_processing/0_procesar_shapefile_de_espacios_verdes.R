@@ -70,8 +70,13 @@ areas_verdes <- areas_verdes %>%
 # Tras inspección visual notamos que el número "mágico" parece ser 8.3 
 # Ratios menores corresponden a boulevares  
 
+# Actualización abril 5, 2021: se ajusta el número mágico a 8, para no perder algunas plazas
+# (como Plaza Santa Cruz en Rosario, osm_id 923423043)
+
+umbral_area_perimetro <- 8
+
 areas_verdes <- areas_verdes %>% 
-    filter((as.numeric(st_area(.)) / as.numeric(lwgeom::st_perimeter(.))) > 8.3)
+    filter((as.numeric(st_area(.)) / as.numeric(lwgeom::st_perimeter(.))) > umbral_area_perimetro)
 
 
 ## Combinar las áreas que estan muy próximas entre si
