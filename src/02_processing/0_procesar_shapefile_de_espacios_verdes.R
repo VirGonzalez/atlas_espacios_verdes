@@ -1,26 +1,22 @@
 # Descargamos el export de todos los datos que tiene OSM para la Argentina, via GEOFABRIK: https://download.geofabrik.de/south-america/argentina.html
 # El shapefile procesado fue obtenido de https://download.geofabrik.de/south-america/argentina-latest-free.shp.zip
 
+library(sf)
+library(igraph)
+library(tidyverse)
 
 ## Carga de datos
-library(sf)
-library(tidyverse)
 
 areas_verdes <- st_read("data/raw/OSM/gis_osm_landuse_a_free_1.shp", 
                         stringsAsFactors = F) %>%
     filter(fclass %in% c("nature_reserve", "park")) %>% 
     select(-code)
 
-## Retenemos sólo espacios mayores a un umbral de corte
-# descartamos los espacios con áreas menores a 1000 m2 (más pequeños que una plazoleta, aproximadamente)
-umbral_descarte_m2 <- 1000
 
-# Ante todo, proyección equiareal
+# Ante todo, proyección equiareal para una medición precisa de áreas y distancias
 areas_verdes <- areas_verdes %>% 
     st_transform(crs = "+proj=laea +lat_0=-40 +lon_0=-60 +x_0=0 +y_0=0 +ellps=WGS84 +units=m +no_defs")
 
-areas_verdes <- areas_verdes %>% # Pasamos a proyección equiareal para una medición precisa de áreas
-    filter(as.numeric(st_area(.)) > umbral_descarte_m2) # Descartamos áreas menores al umbral
 
 
 ## Retirar Grandes Parques Nacionales del dataset
@@ -44,6 +40,7 @@ areas_verdes <- areas_verdes %>% # Pasamos a proyección equiareal para una medi
 # "191347957", "90264216", "7322563", "51185722", "3810531", "3642306", 
 # "350935744", "49772911", "5539208", "46945607", "185329483", "10343154"
 # Retenemos esos, y descartamos los demas.
+
 
 keep_ids <- c("612333451", "79291703", "255963872", "550726747", "220997430", "229796895", 
          "191347957", "90264216", "7322563", "51185722", "3810531", "3642306", 
@@ -81,48 +78,50 @@ areas_verdes <- areas_verdes %>%
 
 ## Combinar las áreas que estan muy próximas entre si
 # (a menos de 10m en este caso)
-# con eso unificamos predios que estab separados por alguna via de circulación interna, 
+# con eso unificamos predios separados por alguna via de circulación interna, 
 # asi podemos considerar su tamaño total luego
 
-
-# Generamos un _buffer_ en torno a los polígonos, y los unimos 
+# Generamos un _buffer_ en torno a los polígonos, e identificamos sus solapamientos
+# La ideas es asignar un id de grupo que asocie a los buffers que forman parte de una 
+# misma "cadena" de poligonos que se solapan entre si, demarcando el area de los parques que consideramos combinados
+# para esto tenemos que armar un grafo de poligonos: 
+# si A toca a B, y B toca a C, entonces A y C son parte de un mismo grupo
+# Vease https://gis.stackexchange.com/a/323067/59568
 
 umbral_de_proximidad <- 5
 
-areas_unificadas <- st_buffer(areas_verdes, umbral_de_proximidad) %>% 
-    st_union() %>% 
-    st_cast("POLYGON") %>% 
-    st_sf() %>% 
-    mutate(id = factor(row_number())) 
+buffers <- st_buffer(areas_verdes, umbral_de_proximidad) 
 
+solapamientos = st_intersects(buffers, buffers)
 
-# Funcion ad-hoc para agregar un feature a paste() que deberia tener...
-# no escribas "NA" (como texto) donde encontras valores NA !!!
+# armamos el grafo a partir de la matriz de adyacencia generada por st_intersects()
+grafo <- graph_from_adj_list(solapamientos)
 
-paste_skip_NAs <- function(lista, sep =", ") {
-    paste(lista[!is.na(lista)], collapse = sep)
-}
+# le asignamos a cada buffer el ID de grupo/cluster al que pertenece 
 
-areas_verdes <- areas_verdes %>% 
-    st_join(areas_unificadas) %>% 
-    #lwgeom::st_make_valid() %>% #  si el summarise() falla con un error de topología inválida
-    group_by(id) %>% 
-    summarise(osm_id = paste(osm_id, collapse = ","),
-              name = paste_skip_NAs(name),
-              fclass = paste(fclass, collapse = ","),
-              combina = n()) %>% 
-    distinct(osm_id, .keep_all = TRUE) # este paso elimina poligonos que aparecen duplicados despues del join
+buffers <- buffers %>% 
+    mutate(cluster_id = components(grafo)$membership) %>% 
+    group_by(cluster_id) %>% 
+    summarise()
 
-# este paso elimina algunos espacios verdes individuales que aparecen sueltos pero 
-# también estan incluidos en algún espacio combinado por el buffer
-espacios_combinados <- areas_verdes %>% 
-    filter(combina > 1) %>% 
-    pull(osm_id) %>% 
-    str_split(",") %>% 
-    unlist()
+# Le asignamos a cada espacio verde el grupo de proximidad al que pertenece
 
 areas_verdes <- areas_verdes %>% 
-    filter(!(combina == 1 & (osm_id %in% espacios_combinados)))
+    st_join(buffers) 
+
+
+
+## Retenemos sólo los clusters cuya area combinada supera un umbral de corte
+# descartamos los menores a 1000 m2 (más pequeños que una plazoleta, aproximadamente)
+umbral_descarte_m2 <- 1000
+
+areas_verdes <- areas_verdes %>% 
+    mutate(area_m2 = as.numeric(st_area(.))) 
+
+areas_verdes <- areas_verdes %>% 
+    group_by(cluster_id) %>% 
+    filter(sum(area_m2) > umbral_descarte_m2) # Descartamos áreas menores al umbral
+
 
 # a guardar
 

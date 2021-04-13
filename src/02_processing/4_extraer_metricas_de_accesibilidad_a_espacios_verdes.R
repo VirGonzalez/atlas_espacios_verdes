@@ -31,12 +31,13 @@ radios_ciudades <- st_read("data/raw/INDEC/radios_eph.json", stringsAsFactors = 
 
 umbral_area_m2 <- 5000
 
+
+# Unificamos clusters y descartamos los que no alcanzan el umbral de area
+
 espacios_verdes <- st_read("data/processed/osm/areas_verdes_urbanas_argentina.shp") %>% 
-    filter(as.numeric(st_area(.))  >= umbral_area_m2) %>% 
-        mutate(area_m2 = as.numeric(st_area(.))) 
-
-
-
+    group_by(cluster_id) %>% 
+    summarise(area_m2 = sum(area_m2)) %>% 
+    filter(area_m2 >= umbral_area_m2)
 
 
 accesibilidad  <- read_csv("data/processed/accesibilidad/espacios_verdes_mas_de_media_ha_a_10_m_caminando.csv") %>% 

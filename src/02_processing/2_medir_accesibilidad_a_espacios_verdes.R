@@ -2,6 +2,10 @@
 library(tidyverse)
 library(sf)
 
+
+# Cargamos espacios verdes
+espacios_verdes <- st_read("data/processed/osm/areas_verdes_urbanas_argentina.shp")
+
 # Umbral de corte para áreas de espacios verdes
 # Consideramos un mínimo de media hectárea, o 5000 m2, 
 # siguiendo los lineamientos de los Indicadores Europeos de Sustentabilidad
@@ -11,12 +15,15 @@ library(sf)
 
 umbral_area_m2 <- 5000
 
-# Cargamos espacios verdes
-espacios_verdes <- st_read("data/processed/osm/areas_verdes_urbanas_argentina.shp") %>% 
-    filter(as.numeric(st_area(.))  >= umbral_area_m2) %>% 
+# Unificamos clusters y descartamos los que no alcanzan el umbral de area
+
+espacios_verdes <- espacios_verdes %>% 
+    group_by(cluster_id) %>% 
+    summarise(area_m2 = sum(area_m2)) %>% 
+    filter(area_m2 >= umbral_area_m2) %>% 
     mutate(ha = as.numeric(st_area(.))/10000)
 
-# Cargamos isocronas calculadas con el script src/1_estimar_distancia_a_espacios_verdes.R
+# Cargamos isocronas calculadas con el script src/02_processing/1_estimar_isocronas_a_pie.R
 isocronas <- st_read("data/processed/isocronas/isocronas_10_min_a_pie_radios_urbanos.shp", 
                      stringsAsFactors = FALSE)
 
@@ -26,7 +33,7 @@ isocronas <- st_transform(isocronas, st_crs(espacios_verdes))
 # Identificamos cantidad y area total de los espacios verdes dentro de la cobertura de cada isocrona
 
 accesibilidad <- st_join(isocronas, espacios_verdes) %>% 
-    group_by(id = id.x) %>% 
+    group_by(id) %>% 
     summarise(n = n(),
               total_ha = sum(ha, na.rm = TRUE)) %>% 
     mutate(n = ifelse(total_ha == 0, 0, n)) %>% 

@@ -1,7 +1,20 @@
 library(sf)
 library(tidyverse)
 
+
+# Umbral de corte para áreas de espacios verdes
+# Consideramos un mínimo de media hectárea, o 5000 m2, 
+# siguiendo los lineamientos de los Indicadores Europeos de Sustentabilidad
+# (https://www.gdrc.org/uem/footprints/eci_final_report.pdf). 
+# que miden el porcentaje de habitantes que reside a menos de 300 metros lineales de un espacio abierto y público 
+# de al menos media hectárea.
+
+umbral_area_m2 <- 5000
+
 areas_verdes <- st_read("data/processed/osm/areas_verdes_urbanas_argentina.shp") %>% 
+    group_by(cluster_id) %>% 
+    summarise(area_m2 = sum(area_m2)) %>% 
+    filter(area_m2 >= umbral_area_m2) %>% 
     st_transform(crs = 4326)
 
 radios <- st_read("data/raw/INDEC/radios_eph.json", stringsAsFactors = FALSE) %>% 

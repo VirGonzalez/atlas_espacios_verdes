@@ -527,6 +527,13 @@
       "Repository": "CRAN",
       "Hash": "b3209c62052922b6c629544d94c8fa8a"
     },
+    "osmdata": {
+      "Package": "osmdata",
+      "Version": "0.1.4",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "964a7d0386869bc8a9f5d5767a9f67a0"
+    },
     "osrm": {
       "Package": "osrm",
       "Version": "3.3.3",
