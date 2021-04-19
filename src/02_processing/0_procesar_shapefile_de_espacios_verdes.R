@@ -64,13 +64,10 @@ areas_verdes <- areas_verdes %>%
 # Existen una gran cantidad de calles, que por error o por tener canteros o areas parquizadas, 
 # figuran con la categoría "park"
 # Podemos detectar calles y otros elementos estrechos y largos comparando su área con su perímetro
-# Tras inspección visual notamos que el número "mágico" parece ser 8.3 
-# Ratios menores corresponden a boulevares  
+# Tras inspección visual y fijamos el número mágico a 5, para no perder algunas plazas de forma alargada
+# (como ésta en Rosario, osm_id 923228155)
 
-# Actualización abril 5, 2021: se ajusta el número mágico a 8, para no perder algunas plazas
-# (como Plaza Santa Cruz en Rosario, osm_id 923423043)
-
-umbral_area_perimetro <- 8
+umbral_area_perimetro <- 5
 
 areas_verdes <- areas_verdes %>% 
     filter((as.numeric(st_area(.)) / as.numeric(lwgeom::st_perimeter(.))) > umbral_area_perimetro)
