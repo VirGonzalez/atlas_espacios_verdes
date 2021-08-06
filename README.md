@@ -2,12 +2,14 @@
 
 Código, datos y reportes generados durante el relevamiento y cuantificación de accesibilidad de espacios verdes en ciudades argentinas. 
 
+El código esta escrito en [R](https://www.r-project.org/).
+
 
 ## Reproducción de resultados
 
 ### Entorno de trabajo
 
-Para recrear el entorno de desarrollo (es decir, instalar automáticamente todos los paquetes de R que proyecto requiere) se emplean las funciones del paquete `renv`, que puede ser instalado desde [CRAN](https://cran.r-project.org/web/packages/renv/index.html):
+Para recrear el entorno de desarrollo (es decir, instalar automáticamente todos los paquetes de R que el proyecto requiere) se emplean las funciones del paquete `renv`, que puede ser instalado desde [CRAN](https://cran.r-project.org/web/packages/renv/index.html):
 
 1. Clonar o descargar este repositorio
 2. Abrir el proyecto (archivo `atlas_espacios_verdes.Rproj`) desde RStudio. O, de no trabajar con RStudio, simplemente correr los siguientes comandos en una sesión de R lanzada desde la carpeta raíz del proyecto. 
