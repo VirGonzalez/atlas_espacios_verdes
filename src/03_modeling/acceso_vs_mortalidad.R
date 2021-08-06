@@ -106,6 +106,16 @@ accesibilidad %>%
 accesibilidad_aglos <- read_csv("data/processed/metricas/accesibilidad_espacios_verdes_aglomerados.csv")
 
 ggplot(accesibilidad_aglos) +
-    geom_col(aes(x = decil_NSE, y = m2_accesibles_per_capita, fill = decil_NSE)) +
+    geom_col(aes(x = decil_NSE, y = m2_accesibles_per_capita, fill = factor(decil_NSE))) +
     facet_wrap(~eph_aglome, scales = "free_y") +
-    scale_fill_viridis_c()
+    labs(title = "Disponibilidad de espacios verdes (m2 per cápita) según nivel socioeconómico de la población",
+         x = NULL, y = "espcio verde per cápita (m2)", fill = "nivel socioeconómico (decil)",
+         subtitle = "Aglomerados urbanos de la Argentina") +
+    scale_fill_viridis_d(guide = guide_legend(direction = "horizontal", 
+                                               title.position = "top", nrow = 1, label.position = "bottom", 
+                                               keyheight = 0.5, keywidth = 0.75)) +
+    theme_minimal() +
+    theme(text = element_text(family = "Lato", color = "gray15"),
+          legend.position = "bottom")
+
+ggsave(filename = "reports/plots/m2_vs_NSE.png", width = 13, height = 8)
